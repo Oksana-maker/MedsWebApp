@@ -1,0 +1,7 @@
+﻿@model Discount
+
+<div>
+    <h3 class="mb-1">@Model.Name</h3>
+    <small>@Model.Description</small><br/>
+    <small>Знижка <strong>@Model.Value.ToString("F2") %</strong>. Діє з <strong>@Model.DiscountStart.ToString("g")</strong> по <strong>@Model.DiscountEnd.ToString("g")</strong></small>
+</div>

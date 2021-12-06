@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MedsWebApp.ViewModels.OrderViewModel>
+
+<p>
+    Ваше замовлення в обробці. Про готовність замовлення Ви додатково будете проінформовані у наступному листі на цю електронну адресу.
+</p>
+
+@foreach (var order in Model)
+{
+    <h1 style="text-decoration:underline;">
+        Замовлення №: <span style="color: #FF0000;">@order.Id</span>
+    </h1>
+    <p style="color: #6c757d!important"> Створено @order.Create.ToString("g")</p>
+    <h4>@order.OrderItems[0].PharmacyName</h4>
+    <p>@order.OrderItems[0].PharmacyAddress</p>
+    <table style="border: 2px solid black;">
+        <thead>
+            <tr>
+                <th scope="col" style="border: 2px solid black; text-align: center">№</th>
+                <th scope="col" style="border: 2px solid black; text-align: center">Назва препарату</th>
+                <th scope="col" style="border: 2px solid black; text-align: center">Кількість</th>
+                <th scope="col" style="border: 2px solid black; text-align: center">Вартість</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var j = 0; j < order.OrderItems.Length; j++)
+            {
+                var orderItem = order.OrderItems[j];
+                var counter = j + 1;
+                <tr>
+                    <th scope="row" style="border: 1px solid black; text-align:center">@counter</th>
+                    <td style="border: 1px solid black; text-align: center">@orderItem.MedicineName</td>
+                    <td style="border: 1px solid black; text-align: center">@orderItem.Count</td>
+                    <td style="border: 1px solid black; text-align: center">@orderItem.Price.ToString("F2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3> Загальна вартість: @order.Price.ToString("F2") грн.</h3>
+}

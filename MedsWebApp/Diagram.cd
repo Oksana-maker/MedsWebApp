@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MedsWebApp.Controllers.ApiController" Collapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="MedsWebApp.Controllers.ApiController.AuthData" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controllers\ApiController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAIAACQAAAAAAAAAAAABAAAAAAAABAAAEQAIAgAAI=</HashCode>
+      <FileName>Controllers\ApiController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Controllers.HomeController" Collapsed="true">
+    <Position X="23" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAMBIEACgAkQCQEAACAAgBGAoAgAAIBAhAMAAIAgCKI=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Controllers.PharmacyController" Collapsed="true">
+    <Position X="21.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAMBIAACQBAAAAAAAkCAAAAAIAEEEABCBgMQAIAECII=</HashCode>
+      <FileName>Controllers\PharmacyController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Models.ApplicationContext" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAACAAABEAAAAAAAAAAAAAAAAAEAAABgAAAAgICAA=</HashCode>
+      <FileName>Models\ApplicationContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Models.BaseModel" Collapsed="true">
+    <Position X="9.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAQACAAgAAAAAAAAAAAAIAgAAAAAAAAAjA=</HashCode>
+      <FileName>Models\BaseModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Models.CartCookie" Collapsed="true">
+    <Position X="26.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Models\CartCookie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Models.Category" Collapsed="true">
+    <Position X="16.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAgAAAQAAAAAAAAAAgAAAAAACAA=</HashCode>
+      <FileName>Models\Category.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MedsWebApp.Models.Discount" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAIAgAAAAAAgAAAQAAAAAAAAAAAAgAAAACAA=</HashCode>
+      <FileName>Models\Discount.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MedsWebApp.Models.ErrorViewModel" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Models.Manufacturer" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAQAAAIAAAACAAAAIAAACAA=</HashCode>
+      <FileName>Models\Manufacturer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Models.Medicine" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgAAAAAAAAgAgAAAAgAAAQAAAEAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\Medicine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MedsWebApp.Models.MedicineInPharmacy" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAAQQAAAAAAAggAAAAAAAgAAAAAAgAAAAAACAA=</HashCode>
+      <FileName>Models\MedicineInPharmacy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MedsWebApp.Models.Order" Collapsed="true">
+    <Position X="14.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAEAQEAAAAAAAgAAAgAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Order.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MedsWebApp.Models.OrderItem" Collapsed="true">
+    <Position X="18.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAAAARAAAAAAAAgAAAQAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Models\OrderItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MedsWebApp.Models.Pharmacy" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACEAAAAAAAgAAAwAAAgAAAACAAAAIAAACAA=</HashCode>
+      <FileName>Models\Pharmacy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MedsWebApp.Models.User" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CYGAAAAAYCAAAIAAEAAAEAQAAAAAAAAAAAABgAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.BaseRepository&lt;TEntity&gt;" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAAAAAAABAAAAAoAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\BaseRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.CategoryRepository" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAFQAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Repositories\CategoryRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.DiscountRepository" Collapsed="true">
+    <Position X="12" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Repositories\DiscountRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.ManufacturerRepository" Collapsed="true">
+    <Position X="16.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Repositories\ManufacturerRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.MedicineInPharmacyRepository" Collapsed="true">
+    <Position X="18.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQIAAIAAAAAAAAAAAAAAAABAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Repositories\MedicineInPharmacyRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.MedicineRepository" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQACAAAAAAAAAAAAAAACAABAAAAAgAAAAABAAA=</HashCode>
+      <FileName>Repositories\MedicineRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.OrderItemRepository" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\OrderItemRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.OrdersRepository" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAhAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\OrderRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.PharmacyRepository" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAEgAAAAAAAAA=</HashCode>
+      <FileName>Repositories\PharmacyRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Repositories.UserRepository" Collapsed="true">
+    <Position X="14.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAgAARAEAAAAAQAAAAAAA=</HashCode>
+      <FileName>Repositories\UserRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Services.OrdersInfoHub">
+    <Position X="28.25" Y="1.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="MedsWebApp.Services.OrdersInfoHub.OrderStatusMessage" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Services\OrdersInfoHub.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAACCAABAIIAAAAAAAAAIAAIAAAAA=</HashCode>
+      <FileName>Services\OrdersInfoHub.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Services.SendEmailService" Collapsed="true">
+    <Position X="24.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAACAAAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Services\SendEmailService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Services.ViewRender" Collapsed="true">
+    <Position X="22" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAIAAAAAAAAAAAAAAAAAIAAAAABAAAAABAAA=</HashCode>
+      <FileName>Services\ViewRender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.BaseViewModel" Collapsed="true">
+    <Position X="7.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\BaseViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.CategoryViewModel" Collapsed="true">
+    <Position X="2.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\CategoryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.DiscountViewModel" Collapsed="true">
+    <Position X="7.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAIAgAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ViewModels\DiscountViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.MedicineInPharmacyViewModel" Collapsed="true">
+    <Position X="11.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAoAAAAAQQAAAAAAIIAAAIACAggAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MedicineInPharmacyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.MedicineViewModel" Collapsed="true">
+    <Position X="14" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQAAAAAAAAAgAgAAAAAAAAYAACEAAAgAAAAABAAAAAA=</HashCode>
+      <FileName>ViewModels\MedicineViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.ModelToViewModelConvertExtensions" Collapsed="true">
+    <Position X="24.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ModelToViewModelConvertExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.OrderItemViewModel" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAgAAAAAAQAAAAAAIAAAAAQCAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>ViewModels\OrderItemViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.OrderViewModel" Collapsed="true">
+    <Position X="5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAQEAAAAAAAAAAAgAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\OrderViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.ViewModels.PharmacyViewModel" Collapsed="true">
+    <Position X="9.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAwAAAgAAAACAAAAIAAAAAA=</HashCode>
+      <FileName>ViewModels\PharmacyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.AuthOptions" Collapsed="true">
+    <Position X="24.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQRAAAAAQAAAAAAAAAAAICCAACgAAAAAAACAAAg=</HashCode>
+      <FileName>AuthOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Program" Collapsed="true">
+    <Position X="23" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MedsWebApp.Startup" Collapsed="true">
+    <Position X="26.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAACAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="MedsWebApp.ViewModels.IViewModel&lt;TEntityViewModel&gt;" Collapsed="true">
+    <Position X="21.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ModelToViewModelConvertExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

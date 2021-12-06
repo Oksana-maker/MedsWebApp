@@ -1,0 +1,32 @@
+﻿@model MedsWebApp.ViewModels.MedicineViewModel
+
+@{
+    string price;
+    string spanClass;
+    if (Model.DisplayPrice == MedsWebApp.ViewModels.MedicineViewModel.NotAvailable)
+    {
+        price = MedsWebApp.ViewModels.MedicineViewModel.NotAvailable;
+        spanClass = "alert-danger";
+    }
+    else
+    {
+        price = Model.DisplayPrice;
+        spanClass = "alert-success";
+    }
+}
+
+
+<a href="~/Medicine/@Model.Id" class="list-group-item list-group-item-action border-primary">
+    <div class="d-md-flex w-100 align-items-center justify-content-md-between">
+        <img src="@Model.ImageURL" class="img-thumbnail mr-3" width="100" height="100" />
+        <div>
+            <h4 class="mb-1">@Model.Name</h4>
+        
+            <small>@Model.ManufacturerName</small>
+        </div>
+        <div>
+            <span class="@spanClass font-weight-bold mr-2">@price</span>
+        </div>
+    </div>
+</a>
+

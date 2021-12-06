@@ -1,0 +1,18 @@
+﻿@model IEnumerable<MedsWebApp.ViewModels.MedicineInPharmacyViewModel>
+
+@if (Model == null || Model.Count() == 0 || Model.All(m => m.AvailableCount == 0))
+{
+    <h3>Немає в наявності</h3>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var medicineInPharmacy in Model.OrderByDescending(mip=>mip.DiscountId))
+        {
+            if (medicineInPharmacy.AvailableCount == 0) continue;
+            { await Html.RenderPartialAsync("_MedicineInPharmacyItem", medicineInPharmacy); }
+        }
+    </div>
+}
+
+

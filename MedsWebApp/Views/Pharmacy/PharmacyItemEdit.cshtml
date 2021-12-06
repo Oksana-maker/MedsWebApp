@@ -1,0 +1,80 @@
+﻿@model Pharmacy
+@{
+    ViewData["Title"] = "Редагування аптеки";
+    string postRoute = ViewBag.PostRoute as string;
+}
+
+@if (ViewBag.IsSuccess is bool success)
+{
+    if (success)
+    {
+        <div class="alert alert-success" role="alert">
+            Зміни успішно збережено
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Виникла помилка, зміни не збережено
+        </div>
+    }
+}
+
+<form asp-route="@postRoute" method="post" id="edit_form">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <label for="name">Назва:</label>
+        <input type="text" id="name" name="name" class="form-control" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="address">Адреса:</label>
+        <input type="text" id="address" name="address" class="form-control" value="@Model.Address" required />
+    </div>
+    <div class="form-group">
+        <label for="phone">Телефон:</label>
+        <input type="text" id="phone" name="phone" class="form-control" value="@Model.Phone" required />
+    </div>
+    <div class="form-group">
+        <label for="worktime">Робочий час:</label>
+        <input type="text" id="worktime" name="worktime" class="form-control" value="@Model.WorkTime" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        $('#edit_form').validate({
+            rules: {
+                name: {
+                    required: true,
+                },
+                worktime: {
+                    required: true,
+                },
+                address: {
+                    required: true,
+                },
+               
+                phone: {
+                    required: true,
+                }
+            },
+            messages: {
+                name: {
+                    required: "Необхідно заповнити"
+                },
+                worktime: {
+                    required: "Необхідно заповнити",
+                },
+                address: {
+                    required: "Необхідно заповнити",
+                },
+              
+                phone: {
+                    required: "Необхідно заповнити",
+                }
+            }
+        });
+    </script>
+}
+

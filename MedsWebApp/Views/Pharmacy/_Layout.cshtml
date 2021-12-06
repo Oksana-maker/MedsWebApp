@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Аптека</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Stylesheets", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container justify-content-between">
+                <a class="navbar-brand" asp-area="" asp-controller="Pharmacy" asp-action="">Аптека</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav flex-grow-1">
+
+                        @if (User.HasClaim(System.Security.Claims.ClaimsIdentity.DefaultRoleClaimType, MedsWebApp.Models.User.AdminRole))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="Medicines">Медикаменти</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="Manufacturers">Виробники</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="Categories">Категорії</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="Pharmacies">Аптеки</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="Discounts">Знижки</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="MedicinesInPharmacy">Медикаменти в аптеках</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="CreateAdmin">Створити адміністратора</a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pharmacy" asp-action="Orders">Замовлення</a>
+                            </li>
+                        }
+
+                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Pharmacy" asp-action="LogOut" type="button" class="d-md-flex btn btn-danger justify-content-end">
+                            Вийти
+                        </a>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="shadow-sm bg-white rounded p-3">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <div class="d-md-flex justify-content-between">
+                <div class="d-inline">&copy; 2021 - Аптека - <a asp-area="" asp-controller="Home" asp-action="About">Про нас</a></div>
+                <a asp-controller="Home" asp-action="ApiLogin">Наш API</a>
+                <a asp-controller="Home" asp-action="Index">Для покупців</a>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

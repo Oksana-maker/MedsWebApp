@@ -1,0 +1,10 @@
+﻿@model BaseModel
+@{
+    ViewData["Title"] = "Перегляд";
+    var deleteRoute = ViewBag.DeleteRoute as string;
+}
+@Html.DisplayForModel()
+@if (ViewBag.DeleteRoute != null)
+{
+    <a class="btn btn-danger" asp-route="@deleteRoute" asp-route-id="@Model.Id">Видалити</a>
+}

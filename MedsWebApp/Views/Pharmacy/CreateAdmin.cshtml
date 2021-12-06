@@ -1,0 +1,89 @@
+﻿@model (string email, bool isValid, bool isMailSend)
+@{
+    ViewData["Title"] = "Додати адміна";
+}
+@if (Model.email != null && Model.isValid && Model.isMailSend)
+{
+    <div class="alert alert-success" role="alert">
+        Успішна реєстрація! На адресу @Model.email Вам надіслано лист для підтвердження реєстрації.
+    </div>
+    <p>
+        Після підтвердження, Ви зможете <a href="@ViewData["TargetLoginAction"]" class="d-block">увійти у Ваш аккаунт</a>
+    </p>
+}
+else
+{
+    if (Model.email != null && !Model.isValid)
+    {
+        <div class="alert alert-danger" role="alert">
+            Невдала реєстрація! Користувач з таким email вже існує.
+        </div>
+    }
+    else if (Model.email != null && !Model.isMailSend)
+    {
+        <div class="alert alert-danger" role="alert">
+            Невдала реєстрація! Не вдалося відправити лист-підтвердження на @Model.email.
+        </div>
+    }
+
+    @using (Html.BeginForm("Pharmacy", "CreateAdmin", FormMethod.Post, new { id = "registration_form" }))
+    {
+        <div class="form-group">
+            <input type="email" name="email" class="form-control" placeholder="Введіть email-адресу" required>
+        </div>
+        <div class="form-group">
+            <input type="text" name="name" class="form-control" placeholder="Введіть ім'я">
+        </div>
+
+        <div class="form-group">
+            <input id="passw" type="password" name="password" class="form-control" placeholder="Введіть пароль" required>
+        </div>
+        <div class="form-group">
+            <input id="passw_conf" type="password" name="password_conf" class="form-control" placeholder="Повторіть пароль" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Зберегти</button>
+
+    }
+
+    @section Scripts{
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+        <script type="text/javascript">
+            $('#registration_form').validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    password_conf: {
+                        required: true,
+                        minlength: 5,
+                        equalTo: "#passw"
+                    }
+
+                },
+                messages: {
+                    email: {
+                        email: "Введіть корректну email-адресу",
+                        required: "Необхідно заповнити"
+                    },
+                    password: {
+                        required: "Необхідно заповнити",
+                        minlength: "Не повинен бути менше за 5 символів"
+                    },
+                    password_conf: {
+                        required: "Необхідно заповнити",
+                        minlength: "Не повинен бути менше за 5 символів",
+                        equalTo: "Паролі не співпадають"
+                    }
+
+
+                }
+            });
+
+        </script>
+    }
+}

@@ -1,0 +1,9 @@
+﻿@model (string username, string confirmAccountToken, DateTime expire, string host)
+<h4>
+    Шановний <strong>@Model.username</strong>, 
+</h4>
+<h5>Дякуємо за реєстрацію в мережі Аптека.</h5>
+<p>
+    Для активації аккаунту перейдіть за <a href="@Model.host/ConfirmEmail?access_token=@Model.confirmAccountToken">посиланням</a> <br/>
+    Посилання дійсне до <strong>@Model.expire.ToString("g")</strong>
+</p>

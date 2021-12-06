@@ -1,0 +1,109 @@
+﻿@model Medicine
+@{
+    ViewData["Title"] = "Редагування медикамента";
+    string postRoute = ViewBag.PostRoute as string;
+}
+
+@if (ViewBag.IsSuccess is bool success)
+{
+    if (success)
+    {
+        <div class="alert alert-success" role="alert">
+            Зміни успішно збережено
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Виникла помилка, зміни не збережено
+        </div>
+    }
+}
+
+<form asp-route="@postRoute" method="post" id="edit_form" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <img src="@Model.ImageURL" class="img-thumbnail mr-3" width="200" height="200"/>
+        <input type="file" id="imageURL" name="imageURLdata" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="name">Назва:</label>
+        <input type="text" id="name" name="name" class="form-control" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="desc">Опис:</label>
+        <input type="text" id="desc" name="description" class="form-control" value="@Model.Description" required />
+    </div>
+    <div class="form-group">
+        <label for="categories">Категорія:</label>
+        <select id="categories" name="categoryid" class="form-control" value="@Model.CategoryId" required>
+            <option class="text-muted" value="">-- Виберіть категорію --</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                if (category.Id == Model.CategoryId)
+                {
+                    <option value="@category.Id" selected>@category.Name</option>
+                }
+                else
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="manufacturers">Виробник:</label>
+        <select id="manufacturers" name="manufacturerid" class="form-control" value="@Model.ManufacturerId" required>
+            <option class="text-muted" value="">-- Виберіть виробника --</option>
+            @foreach (var manufacture in ViewBag.Manufacturers)
+            {
+                if (manufacture.Id == Model.ManufacturerId)
+                {
+                    <option value="@manufacture.Id" selected>@manufacture.Name</option>
+
+                }
+                else
+                {
+                    <option value="@manufacture.Id">@manufacture.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        $('#edit_form').validate({
+            rules: {
+                name: {
+                    required: true,
+                },
+                description: {
+                    required: true,
+                },
+                categoryid: {
+                    required: true,
+                },
+                manufacturerid: {
+                    required: true,
+                }
+            },
+            messages: {
+                name: {
+                    required: "Необхідно заповнити"
+                },
+                description: {
+                    required: "Необхідно заповнити",
+                },
+                categoryid: {
+                    required: "Необхідно вибрати категорію",
+                },
+                manufacturerid: {
+                    required: "Необхідно вибрати виробника",
+                }
+            }
+        });
+    </script>
+}
+

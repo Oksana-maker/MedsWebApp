@@ -1,0 +1,42 @@
+﻿@model MedsWebApp.ViewModels.MedicineInPharmacyViewModel
+@{
+    var inCart = ViewBag.CartList as CartCookie[];
+    var isInCart = inCart?.Any(i => i.MedicineInPharmacyId == Model.Id) ?? false;
+ }
+<div class="list-group-item list-group-item-action border-primary">
+    <div class="d-md-flex align-items-center justify-content-between">
+        <div>
+            <h3 class="mb-1">@Model.PharmacyAddress</h3>
+            <span>@Model.PharmacyName</span>
+        </div>
+        
+        <div class="d-md-flex align-items-center justify-content-md-end">
+            <small class="mr-2">В наявності @Model.AvailableCount шт.</small>
+            @if (Model.DiscountValue.HasValue)
+            {
+                <span class="alert-danger mr-2"><s>@Model.Price.ToString("F2") грн.</s></span>
+                <span class="alert-success font-weight-bold mr-2">@Model.DiscountPrice.Value.ToString("F2") грн.</span>
+            }
+            else
+            {
+                <span class="alert-success font-weight-bold mr-2">@Model.Price грн.</span>
+            }
+            @if (isInCart)
+            {
+                <button class="btn btn-primary" disabled>Вже у кошику</button>
+            }
+            else
+            {
+                <button data-toggle="modal" data-target="#countModal" type="button" class="btn btn-primary" data-whatever="@Model.ToBase64()">У кошик</button>
+                @using (Html.BeginForm("AddToCart", "Home", new { id = Model.Id, medicineId = Model.MedicineId }, FormMethod.Post, null, new { id = Model.Id }))
+                {
+                    <input id="countInput" type="hidden" name="count" value="1" />
+                }
+            }
+        </div>
+        
+    </div>
+
+
+</div>
+

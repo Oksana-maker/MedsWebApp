@@ -1,0 +1,146 @@
+﻿@model Discount
+@{
+    ViewData["Title"] = "Редагування знижки";
+    string postRoute = ViewBag.PostRoute as string;
+}
+
+@if (ViewBag.IsSuccess is bool success)
+{
+    if (success)
+    {
+        <div class="alert alert-success" role="alert">
+            Зміни успішно збережено
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Виникла помилка, зміни не збережено
+        </div>
+    }
+}
+
+<form asp-route="@postRoute" method="post" id="edit_form">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <label for="name">Назва:</label>
+        <input type="text" id="name" name="name" class="form-control" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="description">Опис:</label>
+        <input type="text" id="description" name="description" class="form-control" value="@Model.Description" required />
+    </div>
+    <div class="form-group">
+        <label for="discountstart">Початок дії:</label>
+        <input type="text" id="discountstart" name="discountstart" class="form-control datetimepicker" value="@Model.DiscountStart" required />
+    </div>
+    <div class="form-group">
+        <label for="discountend">Кінець дії:</label>
+        <input type="text" id="discountend" name="discountend" class="form-control datetimepicker" value="@Model.DiscountEnd" required />
+    </div>
+    <div class="form-group">
+        <label for="value">Величина знижки (%):</label>
+        <input type="number" id="value" name="value" class="form-control" min="0" max="100" value="@Model.Value" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+@section Stylesheets{
+    <link rel="stylesheet" href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+}
+
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/lib/moment.js/moment.min.js"></script>
+    <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+
+        $('.datetimepicker').datetimepicker({
+            // Formats
+            // follow MomentJS docs: https://momentjs.com/docs/#/displaying/format/
+            format: 'DD.MM.YYYY HH:mm',
+
+            // Your Icons
+            // as Bootstrap 4 is not using Glyphicons anymore
+            icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar-alt',
+                up: 'fas fa-chevron-up',
+                down: 'fas fa-chevron-down',
+                previous: 'fas fa-chevron-left',
+                next: 'fas fa-chevron-right',
+                today: 'fas fa-check',
+                clear: 'fas fa-trash',
+                close: 'fas fa-times'
+            }
+        });
+        function validateStartDate() {
+            var dateNow = Date.now();
+            var strStart = $('#discountstart').val();
+            var strEnd = $('#discountend').val();
+            var valstart = moment(strStart, 'DD.MM.YYYY HH:mm').toDate().getTime();
+            if (valstart < dateNow) return false;
+            var valend = moment(strEnd, 'DD.MM.YYYY HH:mm').toDate().getTime();
+            return valstart < valend;
+        };
+        function validateEndDate() {
+            var dateNow = Date.now();
+            var strStart = $('#discountstart').val();
+            var strEnd = $('#discountend').val();
+            if (valend < dateNow) return false;
+            var valstart = moment(strStart, 'DD.MM.YYYY HH:mm').toDate().getTime();
+            var valend = moment(strEnd, 'DD.MM.YYYY HH:mm').toDate().getTime();
+            return valstart < valend;
+        };
+        $.validator.addMethod("dateStartCheck", validateStartDate)
+        $.validator.addMethod("dateEndCheck", validateEndDate)
+        $('#edit_form').validate({
+            rules: {
+                name: {
+                    required: true,
+                },
+                description: {
+                    required: true,
+                },
+                discountstart: {
+                    required: true,
+                    dateStartCheck: true,
+                },
+                discountend: {
+                    required: true,
+                    dateEndCheck: true,
+                },
+                value: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max: 100
+                }
+            },
+            messages: {
+                name: {
+                    required: "Необхідно заповнити"
+                },
+                description: {
+                    required: "Необхідно заповнити",
+                },
+                discountstart: {
+                    required: "Необхідно заповнити",
+                    dateStartCheck: "Повинна бути меньше за кінець дії та більше ніж теперішній час",
+                },
+                discountend: {
+                    dateEndCheck: "Повино бути більше за початок дії та більше ніж теперішній час",
+                    required: "Необхідно заповнити",
+                },
+                value: {
+                    required: "Необхідно заповнити",
+                    number: "Повинно бути числом",
+                    min: "Значення від 0 до 100",
+                    max: "Значення від 0 до 100"
+                }
+            }
+        });
+    </script>
+}
+

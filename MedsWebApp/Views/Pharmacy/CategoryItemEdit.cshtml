@@ -1,0 +1,75 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Редагування категорії";
+    string postRoute = ViewBag.PostRoute as string;
+}
+
+@if (ViewBag.IsSuccess is bool success)
+{
+    if (success)
+    {
+        <div class="alert alert-success" role="alert">
+            Зміни успішно збережено
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Виникла помилка, зміни не збережено
+        </div>
+    }
+}
+
+<form asp-route="@postRoute" method="post" id="edit_form">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <label for="name">Назва:</label>
+        <input type="text" id="name" name="name" class="form-control" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="description">Опис:</label>
+        <input type="text" id="description" name="description" class="form-control" value="@Model.Description" required />
+    </div>
+    <div class="form-group">
+        <label for="categories">Категорія вищого рівня:</label>
+        <select id="categories" name="parentid" class="form-control" value="@Model.ParentId">
+            <option class="text-muted" value="">-- Виберіть категорію --</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                if (category.Id == Model.ParentId)
+                {
+                    <option value="@category.Id" selected>@category.Name</option>
+                }
+                else
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        $('#edit_form').validate({
+            rules: {
+                name: {
+                    required: true,
+                },
+                description: {
+                    required: true,
+                },
+            },
+            messages: {
+                name: {
+                    required: "Необхідно заповнити"
+                },
+                description: {
+                    required: "Необхідно заповнити",
+                },
+            }
+        });
+    </script>
+}
+

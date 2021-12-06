@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "Замовлення";
+}
+@model Pharmacy
+<div id="errorAlert" class="alert alert-danger nested" role="alert"></div>
+<h3>@ViewData["Title"] в @Model.Name</h3>
+<div class="list-group">
+
+
+</div>
+
+@section Scripts{
+
+    <script src="/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        const baseUrl = document.location.origin + "/pharmacy/orders/live"
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl(baseUrl)
+            .withAutomaticReconnect()
+            .build();
+
+        function buildHtml(order) {
+            var resultHtml = '';
+            var orderStatus = '';
+            var confirmButton = '';
+            var declineButton = '';
+            if (order.Status === 0) {
+                orderStatus = '<span class="badge badge-secondary mr-1">New</span>';
+                confirmButton = '<button class="btn btn-success" onclick="setReadyStatus(' + order.Id + ')" >Готово</button>';
+                declineButton = '<button class="btn btn-danger ml-2" onclick="setCanceledStatus(' + order.Id + ')">Відмінити</button>';
+            }
+            else if (order.Status === 1) {
+                confirmButton = '<button class="btn btn-success" onclick="setFinishedStatus(' + order.Id + ')">Завершено</button>';
+            }
+
+            resultHtml +=
+                '<h4 class="mb-1">' + orderStatus + ' Замовлення № ' + order.Id + ' <small class="text-muted">' + new Date(order.Create).toLocaleString() + '</small></h4>' +
+                '<table class="table">' +
+                    '<thead>' +
+                        '<tr>' +
+                            '<th scope="col">№з/п</th>' +
+                            '<th scope="col">Назва препарату</th>' +
+                            '<th scope="col">Кількість</th>' +
+                            '<th scope="col">Вартість</th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+            for (var j = 0; j < order.OrderItems.length; j++) {
+                var orderItem = order.OrderItems[j];
+                var counter = j + 1;
+                resultHtml +=
+                    '<tr>' +
+                        '<th scope="row">' + counter + '</th>' +
+                        '<td>' + orderItem.MedicineName + '</td>' +
+                        '<td>' + orderItem.Count + '</td>' +
+                        '<td>' + orderItem.Price + '</td>' +
+                    '</tr>';
+            }
+            resultHtml += '</tbody></table>' +
+                '<div class="d-md-flex justify-content-between">' +
+                    '<h3> Загальна вартість ' + order.Price + '</h3>' +
+                    '<div class="d-md-flex justify-content-between">' +
+                        confirmButton + declineButton +
+                '</div></div>'
+            return resultHtml;
+        }
+
+        hubConnection.on("FirstLoad", function (data) {
+            var resultHtml = '';
+            var ordersArray = JSON.parse(data);
+            for (var i = 0; i < ordersArray.length; i++) {
+                var order = ordersArray[i];
+                resultHtml += '<div id="' + order.Id + '" class="list-group-item border-primary">' + buildHtml(order) + '</div>';
+            }
+            $('div.list-group').html(resultHtml);
+
+        });
+        function error(err) {
+            var errLabel = $('#errorAlert');
+            errLabel.html('Помилка з\'єднання: ' + err.toString());
+            errLabel.removeClass('nested');
+        }
+
+        hubConnection.on("UpdateOrder", function (data) {
+            var order = JSON.parse(data);
+            var exists = $('#' + order.Id);
+            if (order.Status !== 0 && order.Status !== 1 && exists.length) {
+                exists.remove();
+                return;
+            }
+            var resultHtml = buildHtml(order);
+            if (exists.length) {
+                exists.html(resultHtml);
+            }
+            else {
+                $('div.list-group').prepend('<div id="' + order.Id + '" class="list-group-item border-primary">' + resultHtml + '</div>')
+            }
+        });
+        function setReadyStatus(orderId) {
+            try {
+                hubConnection.invoke("SetOrderStatus", { "orderId": orderId, "newStatus": 1 });
+            }
+            catch (err) {
+                error(err);
+            }
+        }
+        function setCanceledStatus(orderId) {
+            try {
+                hubConnection.invoke("SetOrderStatus", { "orderId": orderId, "newStatus": 2 });
+            }
+            catch (err) {
+                error(err);
+            }
+        }
+        function setFinishedStatus(orderId) {
+            try {
+                hubConnection.invoke("SetOrderStatus", { "orderId": orderId, "newStatus": 3 });
+            }
+            catch (err) {
+                error(err);
+            }
+        }
+        hubConnection.onreconnected(id => {
+            var errLabel = $('#errorAlert');
+            errLabel.html('');
+            errLabel.addClass('nested');
+        });
+        hubConnection.onreconnecting(err => {
+            error(err);
+        });
+        try {
+            hubConnection.start()
+        }
+        catch (err) {
+            error(err);
+        }
+    </script>
+}

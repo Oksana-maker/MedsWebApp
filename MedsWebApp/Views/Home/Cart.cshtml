@@ -1,0 +1,169 @@
+﻿@{
+    ViewData["Title"] = "Кошик";
+}
+
+@model Dictionary<MedsWebApp.ViewModels.PharmacyViewModel, IEnumerable<(MedsWebApp.ViewModels.MedicineInPharmacyViewModel, int)>>
+@if (Model == null || Model.Count == 0)
+{
+    <h1>Кошик порожній</h1>
+}
+else
+{
+    double totalSum = 0;
+    <div class="list-group">
+        @foreach (var item in Model)
+        {
+            var pharmacy = item.Key;
+            <div class="list-group-item pb-1">
+                <h3 class="mb-1">@pharmacy.Address</h3>
+                <span>@pharmacy.Name</span>
+            </div>
+            <div class="list-group pt-2 pb-2 pl-4 border border-left-0 border-right-0 border-primary">
+                @foreach (var (medicineInPharmacy, count) in item.Value)
+                {
+                    var price = medicineInPharmacy.DiscountPrice ?? medicineInPharmacy.Price;
+                    var totalPrice = price * count;
+                    totalSum += totalPrice;
+                    <div class="list-group-item border-primary">
+                        <div class="d-md-flex w-100 align-items-center justify-content-between">
+                            <h4 class="mb-1"><a href="~/Medicine/@medicineInPharmacy.MedicineId">@medicineInPharmacy.MedicineName</a></h4>
+                            <div class="d-flex align-items-center justify-content-end">
+                                <small class="mr-2">@count шт.</small>
+                                <span class="alert-success font-weight-bold mr-2">@totalPrice.ToString("F2") грн.</span>
+                                <button data-toggle="modal" data-target="#countModal" type="button" class="btn btn-primary mr-1" data-whatever="@medicineInPharmacy.ToBase64()">Редагувати</button>
+                                @using (Html.BeginForm("AddToCart", "Home", new { id = medicineInPharmacy.Id, medicineId = medicineInPharmacy.MedicineId, fromCart = true }, FormMethod.Post, null, new { id = medicineInPharmacy.Id }))
+                                {
+                                    <input id="countInput" type="hidden" name="count" value="1" />
+                                }
+                                @using (Html.BeginForm("RemoveFromCart", "Home", new { id = medicineInPharmacy.Id }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-danger">Видалити</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="d-md-flex mt-5 justify-content-end">
+        <h3>Всього: @totalSum.ToString("F2") грн.</h3>
+        <button data-toggle="modal" data-target="#createOrderModal" type="button" class="btn btn-primary ml-4"><h5 class="p-0 m-0">Оформити замовлення</h5></button>
+
+    </div>
+
+
+    <div class="modal fade" id="countModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title align-middle" id="exampleModalLongTitle">Modal title</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="mt-2" id="pharaddr"></h4>
+                    <h5 class="btn-group mt-2 align-items-center" role="group">
+                        Кількість:
+                        <button id="decrem" class="btn btn-sm ml-1 btn-secondary" disabled>-</button>
+                        <input class="text-center" id="count" type="text" style="width:50px; color: transparent; text-shadow: 0 0 0 #000000;" value="1" min="1" disabled />
+                        <button id="increm" class="btn btn-sm btn-secondary">+</button>
+                    </h5>
+                    <small class="mt-1 ml-1" id="avail"></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button id="addToCart" type="button" class="btn btn-primary">Додати у кошик</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createOrderModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title align-middle" id="exampleModalLongTitle">Оформлення замовлення</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("CreateOrder", "Home", FormMethod.Post, new { id = "createOrderForm" }))
+                    {
+                        <input class="d-block w-100 form-control" id="emainInput" type="email" name="email" placeholder="Введіть email-адресу" required>
+                        <input class="d-block w-100 mt-2 form-control" id="userNameInput" type="text" name="userName" placeholder="Введіть ім'я" required>
+                    }
+                    <h4 class="mt-3">Сума: @totalSum.ToString("F2") грн.</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button id="createOrder" type="submit" form="createOrderForm" class="btn btn-primary">Підтвердити замовлення</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts{
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+        <script type="text/javascript">
+            $('#createOrderForm').validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    userName: {
+                        required: true
+                    }
+                },
+                messages: {
+                    email: {
+                        email: "Введіть корректну email-адресу",
+                        required: "Необхідно заповнити"
+                    },
+                    userName: {
+                        required: "Необхідно заповнити",
+                    },
+                }
+            });
+
+            $('#countModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var model = JSON.parse(b64_to_utf8(button.data('whatever')));
+                var modal = $(this);
+                $('#addToCart').click(function () {
+                    var form = $('#' + model.id);
+                    form.find('#countInput').val(modal.find('#count').val())
+                    form.submit();
+                });
+                modal.find('.modal-title').text(model.medname);
+                modal.find('#pharaddr').text(model.pharaddr);
+                modal.find('#count').attr('max', model.avail);
+                modal.find('#count').val(1);
+                modal.find('#avail').text('В наявності ' + model.avail + ' шт.');
+            });
+            $('#decrem').click(function () {
+                var input = $('#count');
+                var value = input.val();
+                var max = input.attr('max');
+                var min = 1;
+                if (value > min) input.val(--value);
+                if (value <= min) this.setAttribute("disabled", true);
+                if (value < max) $('#increm').removeAttr("disabled");
+            });
+            $('#increm').click(function () {
+                var input = $('#count');
+                var value = parseInt(input.val());
+                var max = input.attr('max');
+                if (value < max) input.val(++value);
+                if (value >= max) this.setAttribute("disabled", true);
+                if (value > 1) $('#decrem').removeAttr("disabled");
+            });
+            function b64_to_utf8(str) {
+                return decodeURIComponent(escape(window.atob(str)));
+            }
+
+        </script>
+    }
+}

@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Знижки";
+}
+<h1>@ViewData["Title"]</h1>
+
+@model IEnumerable<MedsWebApp.ViewModels.DiscountViewModel>;
+
+<ul id="treeView">
+    @{await Html.RenderPartialAsync("_DiscountItems", Model); }
+</ul>
+
+@section Scripts{
+    <script type="text/javascript">
+        function listOnClick() {
+            var h5 = $(this);
+            var parent_li = h5.parent();
+            var spinnerDiv = parent_li.children('div.d-flex').children();
+            var id = h5.attr('id');
+            var childDiv = parent_li.children('div.nested');
+            var childUl = childDiv.children('ul');
+            if (!h5.hasClass("caret-down") && (childUl.html().length == 0 || childUl.html() == 'Сталася помилка')) {
+                spinnerDiv.slideDown('fast');
+                h5.toggleClass("caret-down");
+                $.ajax({
+                    type: "POST",
+                    url: "LoadDiscountMedicines",
+                    dataType: "text",
+                    data: { id: parseInt(id) }
+                }).done(function (result) {
+                    childUl.html(result);
+                    var childrens = childUl.find('.caret');
+                    childrens.click(listOnClick);
+                    setHoverReactForListItem(childUl);
+                }).fail(function () {
+                    childUl.html('Сталася помилка');
+                }).always(function () {
+                    spinnerDiv.slideUp('fast');
+                    childDiv.slideToggle();
+                });
+            }
+            else {
+                childDiv.slideToggle();
+                h5.toggleClass("caret-down");
+            }
+        };
+        $('.caret').click(listOnClick)
+    </script>
+}

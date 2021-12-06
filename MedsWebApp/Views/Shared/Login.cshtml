@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Вхід";
+    var targetAction = ViewData["TargetAction"] as string;
+    var targetController = ViewData["TargetController"] as string;
+    var registrationLinkAction = ViewData["TargetRegistrationAction"] as string;
+    var resetPasswordForRole = targetController switch
+    {
+        "Home" => MedsWebApp.Models.User.Roles.ApiUser,
+        "Pharmacy" => MedsWebApp.Models.User.Roles.PharmacyUser,
+        _ => MedsWebApp.Models.User.Roles.None
+    };
+}
+@model (string email, bool isValid, bool isEmailConfirmed, MedsWebApp.Models.User.Roles role)
+
+
+<h3>Вхід до персонального кабінету</h3>
+@if (Model.email != null && !Model.isValid)
+{
+    <div class="alert alert-danger" role="alert">
+        Невдала авторизація! Перевірте правильність введених даних.
+    </div>
+}
+else if (Model.email != null && !Model.isEmailConfirmed)
+{
+    <div class="alert alert-danger" role="alert">
+        Невдала авторизація! Необхідно підтвердити Вашу реєстрацію. <br /><button id="resendEmail" class="btn btn-light">Відправити лист повторно</button>
+    </div>
+}
+@using (Html.BeginForm(targetAction, targetController, FormMethod.Post, new { id = "login_form" }))
+{
+    <div class="form-group">
+        <input type="email" name="email" class="form-control" placeholder="Введіть email-адресу" value="@Model.email" required>
+    </div>
+    <div class="form-group">
+        <input type="password" name="password" class="form-control" placeholder="Введіть пароль" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Увійти</button>
+    <div class="form-group">
+        <a asp-controller="Home" asp-action="ResetPasswordRequest" asp-route-role="@resetPasswordForRole" class="d-block"><small>Забули пароль?</small></a>
+        <a href="@registrationLinkAction" class="d-block"><small>Реєстрація</small></a>
+    </div>
+}
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        var role = (int?)Model.role;
+    }
+    <script type="text/javascript">
+        @if (Model.isValid && !Model.isEmailConfirmed) {
+         <text>
+            $('#resendEmail').click(function () {
+                $('#resendEmail').remove();
+                var divAlert = $('div.alert');
+                divAlert.append('<div class="spinner-border spinner-border-sm" role = "status" />');
+                $.ajax({
+                    type: "POST",
+                    url: document.location.origin + "/ResendRegistrationEmail",
+                    dataType: "text",
+                    data: { email: "@Model.email", role: @role }
+                }).done(function (result) {
+                    $('div.spinner-border').remove();
+                    divAlert.append("Лист відправлено повторно.");
+                }).fail(function () {
+                    $('div.spinner-border').remove();
+                    divAlert.append("Сталася помилка");
+                });
+            });
+        </text>
+        }
+        $('#login_form').validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 4
+                }
+            },
+            messages: {
+                email: {
+                    email: "Введіть корректну email-адресу",
+                    required: "Необхідно заповнити"
+                },
+                password: {
+                    required: "Необхідно заповнити",
+                    minlength: "Не повинен бути менше за 4 символи"
+                },
+            }
+        });
+    </script>
+}
+

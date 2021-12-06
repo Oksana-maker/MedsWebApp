@@ -1,0 +1,10 @@
+﻿@model MedicineInPharmacy
+@{ 
+    string discountName = Model.Discount?.Name ?? "Знижка відсутня";
+}
+
+<div>
+    <h3 class="mb-1">@Model.Medicine.Name</h3>
+    <small>@Model.Pharmacy.Name</small>
+    <small>@discountName</small>
+</div>

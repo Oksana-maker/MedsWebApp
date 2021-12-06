@@ -1,0 +1,14 @@
+﻿@model IEnumerable<MedsWebApp.ViewModels.MedicineViewModel>
+@if (Model == null || Model.Count() == 0)
+{
+    <h3>Нічого не знайдено</h3>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var medicineViewModel in Model)
+        {
+            {await Html.RenderPartialAsync("_MedicineItem", medicineViewModel);}
+        }
+    </div>
+}

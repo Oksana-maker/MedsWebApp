@@ -1,0 +1,84 @@
+﻿@model MedsWebApp.ViewModels.MedicineViewModel
+@{
+    ViewData["Title"] = "Продукт";
+}
+<h1 class="display-4">@Model.Name</h1>
+<blockquote class="blockquote">
+    <p class="lead">@Model.Description</p>
+    <footer class="blockquote-footer">@Model.CategoryName</footer>
+    <footer class="blockquote-footer">@Model.ManufacturerName</footer>
+</blockquote>
+
+
+<div class="modal fade" id="countModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title align-middle" id="exampleModalLongTitle">Modal title</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4 class="mt-2" id="pharaddr"></h4>
+                <h5 class="btn-group mt-2 align-items-center" role="group">
+                    Кількість:
+                    <button id="decrem" class="btn btn-sm ml-1 btn-secondary" disabled>-</button>
+                    <input class="text-center" id="count" type="text" style="width:50px; color: transparent; text-shadow: 0 0 0 #000000;" value="1" min="1" disabled />
+                    <button id="increm" class="btn btn-sm btn-secondary">+</button>
+                </h5>
+                <small class="mt-1 ml-1" id="avail"></small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                <button id="addToCart" type="button" class="btn btn-primary">Додати у кошик</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>Наявність в аптеках: </h2>
+
+@{ await Html.RenderPartialAsync("_ListOfMedicineInPharmacy", ViewBag.MedicineInPharmacies as IEnumerable<MedsWebApp.ViewModels.MedicineInPharmacyViewModel>); }
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $('#countModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var model = JSON.parse(b64_to_utf8(button.data('whatever')));
+            var modal = $(this);
+            $('#addToCart').click(function () {
+                var form = $('#' + model.id);
+                form.find('#countInput').val(modal.find('#count').val())
+                form.submit();
+            });
+            modal.find('.modal-title').text(model.medname);
+            modal.find('#pharaddr').text(model.pharaddr);
+            modal.find('#count').attr('max', model.avail);
+            modal.find('#count').val(1);
+            modal.find('#avail').text('В наявності ' + model.avail + ' шт.');
+        });
+        $('#decrem').click(function () {
+            var input = $('#count');
+            var value = input.val();
+            var max = input.attr('max');
+            var min = 1;
+            if (value > min) input.val(--value);
+            if (value <= min) this.setAttribute("disabled", true);
+            if (value < max) $('#increm').removeAttr("disabled");
+        });
+        $('#increm').click(function () {
+            var input = $('#count');
+            var value = parseInt(input.val());
+            var max = input.attr('max');
+            if (value < max) input.val(++value);
+            if (value >= max) this.setAttribute("disabled", true);
+            if (value > 1) $('#decrem').removeAttr("disabled");
+        });
+        function b64_to_utf8(str) {
+            return decodeURIComponent(escape(window.atob(str)));
+        }
+    </script>
+
+}

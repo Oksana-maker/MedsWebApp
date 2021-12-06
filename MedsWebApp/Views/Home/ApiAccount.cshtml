@@ -1,0 +1,211 @@
+﻿@{
+    ViewData["Title"] = "Доступ до API";
+}
+
+@model (string accessToken, DateTime accessTokenExpire, User user)
+
+<h3>Ваші ключі для доступу до API:</h3>
+
+<p>
+    Access token (дійний до <strong>@Model.accessTokenExpire.ToString("g")</strong>):
+    <div class="alert alert-success text-break" role="alert">
+        @Model.accessToken
+    </div>
+</p>
+<p>
+    Refresh token (дійний до <strong>@Model.user.RefreshTokenExpire.ToString("g")</strong>)
+    <div class="alert alert-success text-break" role="alert">
+        @Model.user.RefreshToken
+    </div>
+    @using (Html.BeginForm("UpdateRefreshToken", "Home", FormMethod.Post))
+    {
+        <button class="btn btn-danger" type="submit">Оновити Refresh token</button>
+    }
+</p>
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Кінцева точка</th>
+            <th scope="col">Опис</th>
+            <th scope="col">Метод</th>
+            <th scope="col">Формат запиту</th>
+            <th scope="col">Структура запиту</th>
+            <th scope="col">Формат відповіді</th>
+            <th scope="col">Структура відповіді</th>
+            <th scope="col">Необхідність заголовку авторизації "Bearer {access_token}"</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">api/register</th>
+            <td>Реєстрація нового користувача</td>
+            <td>POST</td>
+            <td>application/json</td>
+            <td>
+                {<br /><span class="pl-2">login:string,</span><br />
+                <span class="pl-2">password:string,</span><br />
+                <span class="pl-2">name:string</span><br />}
+            </td>
+            <td>application/json</td>
+            <td>
+                {<br />
+                <span class="pl-2">user_name:string,</span><br />
+                <span class="pl-2">access_token:string,</span><br />
+                <span class="pl-2">access_token_expire:DateTime,</span><br />
+                <span class="pl-2">refresh_token:string,</span><br />
+                <span class="pl-2">refresh_token_expire:DateTime,</span><br />
+                <span class="pl-2">is_email_sended:bool</span><br />
+                }
+            </td>
+            <td>Ні</td>
+        </tr>
+        <tr>
+            <th scope="row">api/login</th>
+            <td>Вхід під існуючим користувачем</td>
+            <td>POST</td>
+            <td>application/json</td>
+            <td>
+                {<br /><span class="pl-2">login:string,</span><br />
+                <span class="pl-2">password:string,</span><br />
+                }
+            <td>application/json</td>
+            <td>
+                {<br />
+                <span class="pl-2">user_name:string,</span><br />
+                <span class="pl-2">access_token:string,</span><br />
+                <span class="pl-2">access_token_expire:DateTime,</span><br />
+                <span class="pl-2">refresh_token:string,</span><br />
+                <span class="pl-2">refresh_token_expire:DateTime,</span><br />
+                }
+            </td>
+            <td>Ні</td>
+        </tr>
+        <tr>
+            <th scope="row">api/refreshtoken/{refresh_token}</th>
+            <td>Оновлення токенів</td>
+            <td>GET</td>
+            <td>text/plain</td>
+            <td>refresh_token:guid</td>
+            <td>application/json</td>
+            <td>
+                {<br />
+                <span class="pl-2">user_name:string,</span><br />
+                <span class="pl-2">access_token:string,</span><br />
+                <span class="pl-2">access_token_expire:DateTime,</span><br />
+                <span class="pl-2">refresh_token:string,</span><br />
+                <span class="pl-2">refresh_token_expire:DateTime,</span><br />
+                }
+            </td>
+            <td>Ні</td>
+        </tr>
+        <tr>
+            <th scope="row">api/resendregistrationemail</th>
+            <td>Повторне відпрвлення листа для підтвердження email</td>
+            <td>GET</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Так</td>
+        </tr>
+        <tr>
+            <th scope="row">api/search/{search_query}/{page}</th>
+            <td>Пошук медикаментів за назвою</td>
+            <td>GET</td>
+            <td>text/plain</td>
+            <td>search_query:string<br />page:int(необов'язковий')</td>
+            <td>application/json</td>
+            <td>
+                {<br />
+                <span class="pl-2">meds = []</span><br />
+                <span class="pl-2">{</span><br />
+                <span class="pl-4">{</span><br />
+                <span class="pl-4">Id:int,</span><br />
+                <span class="pl-4">Name:string,</span><br />
+                <span class="pl-4">CategoryId:int,</span><br />
+                <span class="pl-4">CategoryName:string,</span><br />
+                <span class="pl-4">ManufacturerId:int,</span><br />
+                <span class="pl-4">ManufacturerName:string,</span><br />
+                <span class="pl-4">Description:string,</span><br />
+                <span class="pl-4">ImageURL:string</span><br />
+                <span class="pl-4">}</span><br />
+                <span class="pl-2">},</span><br />
+                <span class="pl-2">page: int,</span><br />
+                <span class="pl-2">pageSize: int,</span><br />
+                <span class="pl-2">totalPages: int</span><br />}
+            </td>
+            <td>Так</td>
+        </tr>
+        <tr>
+            <th scope="row">api/GetMedicineInPharmacies/{medId}</th>
+            <td>Пошук наявності медикаменту в аптеках</td>
+            <td>GET</td>
+            <td>text/plain</td>
+            <td>medId:int</td>
+            <td>application/json</td>
+            <td>
+                {<br />
+                <span class="pl-2">medInPharmacies = []</span><br />
+                <span class="pl-2">{</span><br />
+                <span class="pl-4">{</span><br />
+                <span class="pl-4">Id:int,</span><br />
+                <span class="pl-4">AvailableCount:int,</span><br />
+                <span class="pl-4">DiscountId:int or null,</span><br />
+                <span class="pl-4">MedicineId:int,</span><br />
+                <span class="pl-4">MedicineName:string,</span><br />
+                <span class="pl-4">PharmacyAddress:string,</span><br />
+                <span class="pl-4">PharmacyId:int,</span><br />
+                <span class="pl-4">PharmacyName:string,</span><br />
+                <span class="pl-4">Price: double</span><br />
+                <span class="pl-4">}</span><br />
+                <span class="pl-2">},</span><br />
+                <span class="pl-2">page: int,</span><br />
+                <span class="pl-2">pageSize: int,</span><br />
+                <span class="pl-2">totalPages: int</span><br />}
+            </td>
+            <td>Так</td>
+        </tr>
+        <tr>
+            <th scope="row">api/createorder</th>
+            <td>Розміщення замовлення</td>
+            <td>POST</td>
+            <td>application/json</td>
+            <td>{<br /><span class="pl-2">items = []</span><br />
+                <span class="pl-2">{</span><br />
+                <span class="pl-4">{</span><br />
+                <span class="pl-4">medicineinpharmacyid:int,</span><br />
+                <span class="pl-4">count:int</span><br />
+                <span class="pl-4">}</span><br />
+                <span class="pl-2">}</span><br />
+                }</td>
+            <td>application/json</td>
+            <td>
+                {<br />
+                <span class="pl-2">orders = []</span><br />
+                <span class="pl-2">{</span><br />
+                <span class="pl-4">{</span><br />
+                <span class="pl-4">Id:int,</span><br />
+                <span class="pl-4">UserId: int,</span><br />
+                <span class="pl-4">Create: DateTime,</span><br />
+                <span class="pl-4">OrderItems = []</span><br />
+                <span class="pl-4">{</span><br />
+                <span class="pl-6">{</span><br />
+                <span class="pl-8">Id:int,</span><br />
+                <span class="pl-8">Count:int,</span><br />
+                <span class="pl-8">MedicineInPharmacyId:int,</span><br />
+                <span class="pl-8">MedicineName:string,</span><br />
+                <span class="pl-8">PharmacyId:int,</span><br />
+                <span class="pl-8">PharmacyName:string,</span><br />
+                <span class="pl-8">PharmacyAddress:string,</span><br />
+                <span class="pl-8">Price:double,</span><br />
+                <span class="pl-8">PharmacyTel:string</span><br />
+                <span class="pl-6">}</span><br />
+                <span class="pl-4">},</span><br />
+                <span class="pl-4">Status:ushort</span><br />
+                <span class="pl-4">}</span><br />
+                <span class="pl-2">}</span><br />}
+            </td>
+            <td>Так</td>
+        </tr>
+    </tbody>
+</table>

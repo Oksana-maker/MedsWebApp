@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Http;
+
+@{
+    var cartCookie = Context.Session.GetString("cart");
+    int countCartItems = 0;
+    if (!string.IsNullOrEmpty(cartCookie))
+    {
+        countCartItems = JsonConvert.DeserializeObject<CartCookie[]>(cartCookie).Length;
+    }
+}
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Аптека</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Аптека</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Range">Асортимент</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Services">Послуги</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Stocks">Знижки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="About">Про нас</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Contacts">Контакти</a>
+                        </li>
+                    </ul>
+                    <a asp-controller="Home" asp-action="Cart" type="button" class="btn btn-primary form-inline">
+                        Кошик <span class="badge badge-light">@countCartItems</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container greendiv">
+        <main role="main" class="pb-3">
+            <div class="text-center shadow-sm bg-white rounded">
+                @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+                {
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control border-primary" name="q" value="@ViewData["SearchString"]" placeholder="Пошук ліків....">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Пошук</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="shadow-sm rounded p-3">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <div class="d-md-flex justify-content-between">
+                <div class="d-inline">&copy; 2021 - Аптека - <a asp-area="" asp-controller="Home" asp-action="About">Про нас</a></div>
+                <a asp-controller="Home" asp-action="ApiLogin">Наш API</a>
+                <a asp-controller="Pharmacy" asp-action="Index">Для аптек</a>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

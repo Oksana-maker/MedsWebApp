@@ -1,0 +1,69 @@
+﻿@model (IEnumerable<BaseModel> items, int totalPage)
+@{ 
+    var addRoute = ViewBag.AddRoute;
+}
+<a class="btn btn-primary mb-2" asp-route="@addRoute">Додати</a> 
+<div class="list-group">
+    @for (int i = 0; i < Model.items.Count(); i++)
+    {
+        var item = Model.items.ElementAt(i);
+        <div class="list-group-item list-group-item-action border-primary">
+            <div class="d-md-flex w-100 align-items-center justify-content-md-between">
+                @{ await Html.RenderPartialAsync(ViewBag.ItemPartial as string, item);}
+                <div class="d-md-flex justify-content-end">
+                    <a class="btn btn-primary" asp-route="@ViewBag.ShowRoute" asp-route-id="@item.Id">Переглянути</a>
+                    <a class="btn btn-primary ml-2" asp-route="@ViewBag.EditRoute" asp-route-id="@item.Id">Редагувати</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@if (Model.items != null && Model.items.Count() != 0 && Model.totalPage != 0)
+{
+    <div class="d-flex justify-content-center mt-4">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                @{
+                    if (ViewBag.Page != 1)
+                    {
+                        <a class="btn btn-primary" asp-route-page="1">1</a>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-light" disabled>1</button>
+                    }
+                    int begin;
+                    if (ViewBag.Page - 3 > 1)
+                    {
+                        <button type="button" class="btn btn-light" disabled>...</button>
+                        begin = ViewBag.Page - 3;
+                    }
+                    else
+                    {
+                        begin = 1;
+                    }
+                    for (int i = begin; i < Model.totalPage; i++)
+                    {
+
+                        var currNumber = i + 1;
+                        if (currNumber == begin + 6)
+                        {
+                            <button type="button" class="btn btn-light" disabled>...</button>
+                            <a class="btn btn-primary" asp-route-page="@Model.totalPage">@Model.totalPage</a>
+                            break;
+                        }
+                        if (currNumber != ViewBag.Page)
+                        {
+                            <a class="btn btn-primary" asp-route-page="@currNumber">@currNumber</a>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-light" disabled>@currNumber</button>
+                        }
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+}

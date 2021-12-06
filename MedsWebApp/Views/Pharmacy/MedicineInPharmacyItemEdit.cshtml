@@ -1,0 +1,131 @@
+﻿@model MedicineInPharmacy
+@{
+    ViewData["Title"] = "Редагування медикамента в аптеці";
+    string postRoute = ViewBag.PostRoute as string;
+}
+
+@if (ViewBag.IsSuccess is bool success)
+{
+    if (success)
+    {
+        <div class="alert alert-success" role="alert">
+            Зміни успішно збережено
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Виникла помилка, зміни не збережено
+        </div>
+    }
+}
+
+<form asp-route="@postRoute" method="post" id="edit_form">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <label for="medicine">Медикамент:</label>
+        <select id="medicine" name="medicineid" class="form-control" value="@Model.MedicineId" required>
+            <option class="text-muted" value="">-- Виберіть медикамент --</option>
+            @foreach (var medicine in ViewBag.Medicines)
+            {
+                if (medicine.Id == Model.MedicineId)
+                {
+                    <option value="@medicine.Id" selected>@medicine.Name</option>
+                }
+                else
+                {
+                    <option value="@medicine.Id">@medicine.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="pharmacy">Аптека:</label>
+        <select id="pharmacy" name="pharmacyid" class="form-control" value="@Model.PharmacyId" required>
+            <option class="text-muted" value="">-- Виберіть аптеку --</option>
+            @foreach (var pharmacy in ViewBag.Pharmacies)
+            {
+                if (pharmacy.Id == Model.PharmacyId)
+                {
+                    <option value="@pharmacy.Id" selected>@pharmacy.Name</option>
+
+                }
+                else
+                {
+                    <option value="@pharmacy.Id">@pharmacy.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="discount">Знижка:</label>
+        <select id="discount" name="discountid" class="form-control" value="@Model.DiscountId">
+            <option class="text-muted" value="">-- Виберіть знижку --</option>
+            @foreach (var discount in ViewBag.Discounts)
+            {
+                if (discount.Id == Model.DiscountId)
+                {
+                    <option value="@discount.Id" selected>@discount.Name</option>
+
+                }
+                else
+                {
+                    <option value="@discount.Id">@discount.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="availablecount">Кількість в наявності:</label>
+        <input type="number" id="availablecount" name="availablecount" min="0" class="form-control" value="@Model.AvailableCount" required />
+    </div>
+    <div class="form-group">
+        <label for="price">Ціна:</label>
+        <input type="number" id="price" name="price" min="0" class="form-control" value="@Model.Price.ToString("F2").Replace(',','.')" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        $('#edit_form').validate({
+            rules: {
+                medicineid: {
+                    required: true,
+                },
+                pharmacyid: {
+                    required: true,
+                },
+                availablecount: {
+                    required: true,
+                    number: true,
+                    min: 0
+                },
+                price: {
+                    required: true,
+                    number: true,
+                    min: 0
+                }
+            },
+            messages: {
+                medicineid: {
+                    required: "Необхідно вибрати медикамент"
+                },
+                pharmacyid: {
+                    required: "Необхідно вибрати аптеку",
+                },
+                availablecount: {
+                    required: "Необхідно заповнити",
+                    number: "Повинно бути числом",
+                    min: "Не може бути від'ємним"
+                },
+                price: {
+                    required: "Необхідно заповнити",
+                    number: "Повинно бути числом",
+                    min: "Не може бути від'ємним"
+                }
+            }
+        });
+    </script>
+}
+
