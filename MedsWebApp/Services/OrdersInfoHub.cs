@@ -51,7 +51,14 @@ namespace MedsWebApp.Services
             if (pharmacy == null) return;
             await Groups.AddToGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
             var orderItems = await orderItemsRepository.LoadNewForPharmacy(pharmacy.Id);
-            var orders = orderItems.Select(oi=>oi.Order).Distinct().AsViewModel().ToArray();
+            var ordersAll = orderItems.Select(oi => oi.Order.Id).Distinct();
+            var ordersList = new List<Order>();
+            foreach (var orderId in ordersAll)
+            {
+                var order = await ordersRepository.LoadEagerNoTracking(orderId);
+                ordersList.Add(order);
+            }
+            var orders = ordersList.AsViewModel().ToArray();
             
             await Clients.Caller.SendAsync("FirstLoad", JsonConvert.SerializeObject(orders));
             await base.OnConnectedAsync();

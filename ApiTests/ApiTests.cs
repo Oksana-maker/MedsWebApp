@@ -25,7 +25,7 @@ namespace ApiTests
         [Test, Order(1)]
         public async Task Register()
         {
-            var json = JsonConvert.SerializeObject(new { login = "drive201030@gmail.com", password = "1234", name = "ƒмитро" });
+            var json = JsonConvert.SerializeObject(new { login = "ok170519841@gmail.com", password = "1234", name = "ќксана" });
             var response = await client.PostAsync("api/register", new StringContent(json, System.Text.Encoding.UTF8, "application/json"));
             if (!response.IsSuccessStatusCode)
             {
@@ -52,7 +52,7 @@ namespace ApiTests
         [Test, Order(2)]
         public async Task Login()
         {
-            var json = JsonConvert.SerializeObject(new { login = "drive201030@gmail.com", password = "1234" });
+            var json = JsonConvert.SerializeObject(new { login = "ok170519841@gmail.com", password = "1234" });
             var response = await client.PostAsync("api/login", new StringContent(json, System.Text.Encoding.UTF8, "application/json"));
             if (!response.IsSuccessStatusCode)
             {
